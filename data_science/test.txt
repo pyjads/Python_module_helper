@@ -1,0 +1,6 @@
+Sanket_Gupta, 26 , M
+Sanchita_Gupta, 23 , F
+Medhavi_Kulkarni, 24 , F
+Tushar_Mahajan, 25, M
+Ritika, 22, F
+Meera_Jain, 24, F
