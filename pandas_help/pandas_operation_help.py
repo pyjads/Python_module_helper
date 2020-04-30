@@ -165,8 +165,20 @@ print(d.head())
 # the original dataframe indexes. so you have to reset the index by passing ignore_index=True, this will be row wise
 # concatenation. For column wise concatenation pass axis=1 and data are joined based on index value equality
 
-#
+# you can also provide join='inner' in this case only the rows with index which are present in both dataframe will be
+# shown, by default join='outer'
 
+# for multi level indexing you can provide keys in .concat
+# for example:
+s1 = pd.Series(['a', 'b'], index=['a','b'])
+s2 = pd.Series(['c', 'd'], index=['c','b'])
+
+
+s = pd.concat([s1,s2],keys=['s1','s2'], axis=1) # try with axis=1 or axis=0
+print(s)
+
+
+# .concat() can also work with the dict in that case keys of concat will keys of dict, dict = {key: DataFrame/Series}
 # %%
 
 # if two dataframes do not have same order than we can merge the data
@@ -178,11 +190,24 @@ df2 = pd.DataFrame({'rkey': ['foo', 'bar', 'baz', 'foo'],
 
 # here if we want to merge df1 and df2 but notice they don't have same order so we cannot concatenate with axis=1
 # so we can merge the df1 and df2 using pd.merge during this type of merge  index is ignored
+# you can provide suffixes=[] for providing the column suffix if two dataframe have same column name and to distinguish
+# in the final table
 
 merged = pd.merge(left=df1, right=df2, left_on='lkey', right_on='rkey')
 print(merged)
 
+merged = pd.merge(df1, df2) # here it will be joined on the columns which are common to both and by default
+# merge is inner you can provide how='inner'/'outer'/etc. for changing merging behaviour
+print(merged)
+
 # There are three types of merge one-to-one, manytoOne/onetomany and manytomany
+
+
+# if you want to automatically order the merged data frame use pd.merge_ordered()
+# argument that can be passed are fill_method, suffixes
+#%%
+
+# you can also join two dataframes using .join() like population.join(unemployment, how='inner')
 
 # %%
 
@@ -402,6 +427,10 @@ print(data.loc[([1924, 1932], ['AUT', 'CAN']), :])  # you have to put : in colum
 print(data.loc[(slice(None), ['AUT', 'CAN']), :])  # ignore the outer index and include inner index
 print(data.loc[(1924, ['AUT', 'CAN']), :])
 print(data.loc[(slice(None), slice('AUT', 'BEL')), :])  # slice on inner index is like 'AUT':'BEL'
+
+#%%
+
+# if you want to sort dataframe based on certain column use .sort_values(<column name>)
 
 # %%
 
