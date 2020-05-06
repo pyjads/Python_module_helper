@@ -134,6 +134,18 @@ a = np.array([1,2,3,4])
 b = a.copy() # to create a deep copy hence a and b are independent of each other changes
 
 #%%
+# create an array with mentioned diaognal numbers
+a = np.diag([1,2,3,4,5])
+print(a)
+
+
+# extracting the diognam numbers
+a = np.arange(25).reshape(5,5)
+print(a)
+print(np.diag(a))
+
+
+#%%
 # mathematics operation
 a = np.random.randint(1, 100, size=(3,6))
 b = np.random.randint(1,100, size=(3,6))
@@ -261,6 +273,50 @@ print('\nHorizontal Stack')
 print(horizontal_stack)
 
 #%%
+
+# converting a 1d array to 2d array
+# if you have 1d array and u want to change to 2d array you cannot do it with transpose
+# np.newaxis add axis at designated level you want
+
+a = np.arange(0,40,10)
+a = a[:, np.newaxis] # converting to 2d array
+print(a)
+
+a = np.arange(0,10).reshape(2,5)
+a = a[:,:, np.newaxis]
+print(a.shape)
+print(a)
+#%%
+
+# if you want to flatten the array, i.e. convert nd array to 1 dimensional array
+a = np.arange(25).reshape(5,5)
+print(a.ravel())
+#%%
+
+# sorting
+#sorting with fancy indexing
+a = np.array([4, 3, 1, 2])
+j = np.argsort(a)
+print(j)
+
+print(a[j])
+
+#Sorting along an axis:
+a = np.array([[5, 4, 6], [2, 3, 2]])
+b = np.argsort(a, axis=0) # try with axis=1
+print(b)
+#%%
+# creating a tile
+a = np.tile(np.arange(0,40,10),(3,2))
+
+print(a)
+
+# getting transpose
+a = a.T
+print(a)
+
+
+#%%
 # working with range:
 np_range = np.arange(0,40,5) # 0 to 10 with step size of 5
 print(np_range)
@@ -281,7 +337,8 @@ two_d = np.random.randint(1,100, size=(5,5)) # 5*5 array
 print('\nArray 2-D')
 print(two_d)
 
-print('Index from row 3 till last and columns 0,2,4')
+
+print('\nIndex from row 3 till last and columns 0,2,4')
 print(two_d[3:,[0,2,4]])
 
 
@@ -306,7 +363,7 @@ print(a+b)
 #%%
 # getting the coordinates of the maximum value
 np.random.seed(42)
-a = np.random.randint(1,1000, size=(2, 4, 5))
+a = np.random.randint(1,1000, size=(2,2, 4, 5))
 print('\nArray A')
 print(a)
 
@@ -366,4 +423,14 @@ def sum_num(*args):
 args = [1,2,3,4,5]
 kwargs = {'name':1,'age':2,'system':3}
 print(len(args))
+
+#%%
+# computing the percentile
+import numpy as np
+
+data = np.random.binomial(9,0.25,size=1000)
+print(np.sum(data==9))
+import matplotlib.pyplot as plt
+plt.hist(data, cumulative=True, density=True, histtype='step', bins=100)
+plt.show()
 

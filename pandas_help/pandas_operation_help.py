@@ -49,6 +49,18 @@ print(data.columns)
 # dropping rows with any Nan df.dropna(how='any) how='all' will remove a row in which all columns are null you can provide
 # thresh=<int> to drop rows/columns if it is equal or greater than thresh
 
+# if you want to drop a row based on if particular column is na then use
+# df.dropna(subset=[<column name>], inplace=True)
+
+#%%
+
+# if you want to concatenate two columns then you can use:
+# data.A.str.cat(data.B, sep=' ') you can specify sep as you like
+
+#%%
+
+# if you want to get total null values in each column you can use data.isnull().sum()
+
 # %%
 
 # to get index
@@ -74,6 +86,7 @@ print(data.tail())
 # to get frequency count of a column
 # value_counts is a function of Series not of dataFrame so cannot be applied as data.value_counts(dropna=False)
 unique = data['Year'].value_counts(dropna=False)  # dropna= False will include na values
+# you can pass normalize=True to get propotions the values are between 0 and 1
 print(unique)
 
 # %%
@@ -216,6 +229,9 @@ print(merged)
 # data['A'] = data['A].astype(str)
 #
 # example: if we want to convert A column of data to category --> category datatype is memory efficient
+# https://campus.datacamp.com/courses/analyzing-police-activity-with-pandas/analyzing-the-effect-of-weather-on-policing?ex=4
+# follow above link for more useful ways for using category
+
 # data['A'] = data['A'].astype('category')
 
 
@@ -277,7 +293,7 @@ pattern3 = bool(re.match(pattern='[A-Z]\w*', string='Australia'))
 print(pattern3)
 
 # pattern = '^[A-Za-z .]*$'
-# mask = countries.str.contains(pattern)
+# mask = countries.str.contains(pattern) # you can provide na=False so if there is missing value it will be linked to F
 
 # %%
 
@@ -613,4 +629,10 @@ print(df1.add(series, axis='rows')) # in this case index column of df1 will not 
 
 # similar to add we have multiply
 
+#%%
 
+# computing the frequency table user crosstab
+cross = pd.crosstab([data.Year, data.Gender], data.Medal)
+print(cross)
+cross['Total'] = cross.sum(axis=1)
+print(cross)

@@ -62,3 +62,6 @@ indexes = pd.Series(['Jan','Jan','Mar','Mar','May','May','July','July','Sep','Se
 date_sample = sales.groupby(sales.index.month).sum().groupby(indexes).sum()
 date_sample2=sales.groupby(sales.index.month).sum()
 
+#%%
+sales.loc[sales['STATUS'] == 'Shipped', 'derived'] = 'H'
+
