@@ -52,12 +52,12 @@ print(data.columns)
 # if you want to drop a row based on if particular column is na then use
 # df.dropna(subset=[<column name>], inplace=True)
 
-#%%
+# %%
 
 # if you want to concatenate two columns then you can use:
 # data.A.str.cat(data.B, sep=' ') you can specify sep as you like
 
-#%%
+# %%
 
 # if you want to get total null values in each column you can use data.isnull().sum()
 
@@ -183,13 +183,11 @@ print(d.head())
 
 # for multi level indexing you can provide keys in .concat
 # for example:
-s1 = pd.Series(['a', 'b'], index=['a','b'])
-s2 = pd.Series(['c', 'd'], index=['c','b'])
+s1 = pd.Series(['a', 'b'], index=['a', 'b'])
+s2 = pd.Series(['c', 'd'], index=['c', 'b'])
 
-
-s = pd.concat([s1,s2],keys=['s1','s2'], axis=1) # try with axis=1 or axis=0
-print(s)
-
+s = pd.concat([s1, s2], keys=['s1', 's2'], axis=0)  # try with axis=1 or axis=0
+print(type(s))
 
 # .concat() can also work with the dict in that case keys of concat will keys of dict, dict = {key: DataFrame/Series}
 # %%
@@ -197,9 +195,9 @@ print(s)
 # if two dataframes do not have same order than we can merge the data
 
 df1 = pd.DataFrame({'lkey': ['foo', 'bar', 'baz', 'foo'],
-                    'value': [1, 2, 3, 5]}, index=['A','B','C','D'])
+                    'value': [1, 2, 3, 5]}, index=['A', 'B', 'C', 'D'])
 df2 = pd.DataFrame({'rkey': ['foo', 'bar', 'baz', 'foo'],
-                    'value': [5, 6, 7, 8]}, index=['C','D','A','F'])
+                    'value': [5, 6, 7, 8]}, index=['C', 'D', 'A', 'F'])
 
 # here if we want to merge df1 and df2 but notice they don't have same order so we cannot concatenate with axis=1
 # so we can merge the df1 and df2 using pd.merge during this type of merge  index is ignored
@@ -209,7 +207,7 @@ df2 = pd.DataFrame({'rkey': ['foo', 'bar', 'baz', 'foo'],
 merged = pd.merge(left=df1, right=df2, left_on='lkey', right_on='rkey')
 print(merged)
 
-merged = pd.merge(df1, df2) # here it will be joined on the columns which are common to both and by default
+merged = pd.merge(df1, df2)  # here it will be joined on the columns which are common to both and by default
 # merge is inner you can provide how='inner'/'outer'/etc. for changing merging behaviour
 print(merged)
 
@@ -218,7 +216,7 @@ print(merged)
 
 # if you want to automatically order the merged data frame use pd.merge_ordered()
 # argument that can be passed are fill_method, suffixes
-#%%
+# %%
 
 # you can also join two dataframes using .join() like population.join(unemployment, how='inner')
 
@@ -373,7 +371,7 @@ print(q)
 
 # count() is used to get the not null values
 print(iris.count())
-
+print('======================================')
 # unique() is used to get unique values present in a column it is a series method not a dataframe method
 print(iris['species'].unique())
 
@@ -444,7 +442,7 @@ print(data.loc[(slice(None), ['AUT', 'CAN']), :])  # ignore the outer index and 
 print(data.loc[(1924, ['AUT', 'CAN']), :])
 print(data.loc[(slice(None), slice('AUT', 'BEL')), :])  # slice on inner index is like 'AUT':'BEL'
 
-#%%
+# %%
 
 # if you want to sort dataframe based on certain column use .sort_values(<column name>)
 
@@ -497,7 +495,7 @@ print(group)
 sales = pd.read_csv('pandas_help/sales_data_sample.csv', encoding='cp1252')
 sales.set_index('ORDERDATE', inplace=True)
 sales.index = pd.to_datetime(sales.index)
-by_day = sales.groupby([sales.index.year, sales.index.strftime('%a')])# here we grouping by year then by day
+by_day = sales.groupby([sales.index.year, sales.index.strftime('%a')])  # here we grouping by year then by day
 # if you want to see the group use .groups
 
 # if you want to iterate
@@ -513,7 +511,7 @@ print(unit_sum)
 # TODO: The result should be 5 columns only but the output row is way longer. records are duplicated
 
 def group_by_status(group):
-    print('called')
+
     df = pd.DataFrame(
         {
             'Status': group['STATUS'],
@@ -526,7 +524,6 @@ def group_by_status(group):
 sales = pd.read_csv('pandas_help/sales_data_sample.csv', encoding='cp1252')
 sales_data = sales.groupby('STATUS').apply(group_by_status)
 print(sales_data.head())
-
 
 # classic way of using groupby
 '''
@@ -575,6 +572,8 @@ print(survived_mean_1)
 # TODO: some extra stuff to be looked upon
 # .transform() is used to transform the column look into pandas glossary
 sales = pd.read_csv('pandas_help/sales_data_sample.csv', encoding='cp1252')
+
+
 # sales.set_index('ORDERDATE', inplace=True)
 # sales.index = pd.to_datetime(sales.index)
 
@@ -582,9 +581,10 @@ def filling(series):
     series = 120
     return series
 
-sales['QUANTITYORDERED'] = sales[sales['QUANTITYORDERED']>24]['QUANTITYORDERED'].apply(filling)
 
-#%%
+sales['QUANTITYORDERED'] = sales[sales['QUANTITYORDERED'] > 24]['QUANTITYORDERED'].apply(filling)
+
+# %%
 # you can use .divide() method as df1.divide(series1, axis='rows')
 # you need this because df1/series2 will not work usually because column labels are not equal
 
@@ -594,45 +594,57 @@ d = {
     'value3': [np.nan, 2, 3, 4, 5, 6, 7]
 }
 
-series = pd.Series([100,2,3,4,5,6,7])
+series = pd.Series([100, 2, 3, 4, 5, 6, 7])
 df2 = pd.DataFrame({
-    'value1':[1,2,3,4,5,6,7],
-    'value2':[7,6,5,4,3,2,1]
-} ) # try with , index=['A','B','C','D','E','F','G']
+    'value1': [1, 2, 3, 4, 5, 6, 7],
+    'value2': [7, 6, 5, 4, 3, 2, 1]
+})  # try with , index=['A','B','C','D','E','F','G']
 
 df1 = pd.DataFrame(d)
 
 # below code will not work
 # in order for this to work df2 should have same column label as df1
-print(df1/df2)
-
+print(df1 / df2)
+print()
 # instead use .divide() where argument of divide should be series in series division indexing will not taken
 # into consideration
 
 # .divide() with argument of divide as dataframe will only work if both have same columns labels
 print(df1.divide(df2, axis='rows'))
-
+print()
 # pct_change() is use for currentvalue - previous value
 
 print(df2.pct_change())
-
+print()
 # if you add two data frames
-print(df1 + df2) # column label of df1 should be same as column label in df2 to be added else it will result in nan
+print(df1 + df2)  # column label of df1 should be same as column label in df2 to be added else it will result in nan
+print()
 # above df2 mention column label as value4 and value5, and then replace with value1 and value2
 
 # if in df2 column labels are value1 and value2 and you add it will df1 value1 and value2 columns with nan will output
 # to nan but if in that case you can add .add() with argument fill_value=0 where nan value will be replaced by 0
-print(df1.add(df2, fill_value=0)) # you can chain it with .add() again
-
+print(df1.add(df2, fill_value=0))  # you can chain it with .add() again
+print()
 # also .add can be used with series as well but fill value will not be valid
-print(df1.add(series, axis='rows')) # in this case index column of df1 will not be taken into consideration
-
+print(df1.add(series, axis='rows'))  # in this case index column of df1 will not be taken into consideration
+print()
 # similar to add we have multiply
 
-#%%
+# multiplication example of series with dataframe
+data = pd.DataFrame(np.arange(40).reshape(8,5), columns=list('abcde'))
+s = pd.Series([100, 200, 300, 400, 500], index=list('abcde'))
+
+print(data.mul(s))
+# %%
 
 # computing the frequency table user crosstab
 cross = pd.crosstab([data.Year, data.Gender], data.Medal)
 print(cross)
 cross['Total'] = cross.sum(axis=1)
 print(cross)
+
+# %%
+
+# for 3-d plots please see mentioned link: https://plotly.com/python/3d-scatter-plots/
+
+#%%

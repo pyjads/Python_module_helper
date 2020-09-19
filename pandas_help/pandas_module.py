@@ -32,8 +32,8 @@ names = data.sheet_names
 # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.ExcelFile.parse.html
 # check read_excel for more options
 # general code
-# df = data..parse(0, skiprows=[1], names=['Country','AAM due to War (2002)']) --> skiprows need to be of typle list
-df1 = data.parse('sheet_names<string>')S
+# df = data.parse(0, skiprows=[1], names=['Country','AAM due to War (2002)']) --> skiprows need to be of typle list
+df1 = data.parse('sheet_names<string>')
 df2 = data.parse(index_of_sheet)
 
 '''
